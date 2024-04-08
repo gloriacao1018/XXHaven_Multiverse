@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <title>CAT CAFE DEMO</title>
+
+    <!-- zimjs.com - JavaScript Canvas Framework -->
     <script type=module>
 
 import zim from "https://zimjs.com/cdn/015/zim_game";
@@ -43,7 +45,7 @@ function ready() {
             label: "PLAY",
             backgroundColor: "#A44B43",
         })
-            .pos(0, 0, CENTER, CENTER)
+            .pos(0, 50, CENTER, CENTER)
             .hov()
             .top()
             .addTo(part1);
@@ -56,23 +58,8 @@ function ready() {
                 S.update();
             });
         });
-
-        let customize = new Button({
-            width: 200,
-            height: 60,
-            label: "Make your own game",
-            backgroundColor: "#A44B43",
-        })
-            .pos(0, 120, CENTER, CENTER)
-            .hov()
-            .top()
-            .addTo(part1);
-
-        customize.on("click", () => {
-            window.location.href = "/page.js";
-        });
-
     };
+
     showPart1();
 
 
