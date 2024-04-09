@@ -5,7 +5,12 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const mongoose = require('mongoose');
 
+const cors = require('cors');
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:3000'
+}));
 const upload = require('./upload');
 
 app.use(bodyParser.json());
@@ -25,7 +30,7 @@ const GameSchema = new mongoose.Schema({
   items: [String],
   characters: [{
     image: String,
-    items: [String],
+    accepting: [String], // 使用accepting数组替代原来的items数组，直接存储可接受的物品名称
   }],
   timerLength: Number,
   winnerScenarios: [String],
@@ -54,7 +59,7 @@ app.post('/submit-game', upload.fields([
   { name: 'winnerScenario3' },
 ]), (req, res) => {
   // req.files将包含文件的信息
-  console.log(req.files.backgroundImage); // 这将显示上传的背景图片的信息
+  console.log(req.body); // 打印请求体
   // req.body将包含非文件的表单字段
 
   // 访问非文件数据
@@ -91,20 +96,19 @@ app.post('/submit-game', upload.fields([
     characters: [
       {
         image: req.files['character1'] ? req.files['character1'][0].path : '',
-        // items: req.body['character1Items'] ? req.body['character1Items'] : [] // 假设这是一个数组
-        items: req.body['character1Items'] ? req.body['character1Items'].split(',') : [] // 如果是字符串，则拆分成数组
+        accepting: req.body['character1Items'] ? req.body['character1Items'].split(',') : []
       },
       {
         image: req.files['character2'] ? req.files['character2'][0].path : '',
-        items: req.body['character2Items'] ? req.body['character2Items'] : [] // 同上
+        accepting: req.body['character2Items'] ? req.body['character2Items'].split(',') : []
       },
       {
         image: req.files['character3'] ? req.files['character3'][0].path : '',
-        items: req.body['character3Items'] ? req.body['character3Items'] : [] // 同上
+        accepting: req.body['character3Items'] ? req.body['character3Items'].split(',') : []
       },
       {
         image: req.files['character4'] ? req.files['character4'][0].path : '',
-        items: req.body['character4Items'] ? req.body['character4Items'] : [] // 同上
+        accepting: req.body['character4Items'] ? req.body['character4Items'].split(',') : []
       }
     ],
     timerLength: req.body.timerLength,

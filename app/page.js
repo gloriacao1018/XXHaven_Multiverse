@@ -26,7 +26,8 @@ export default function Home() {
     const formData = new FormData(event.target); // 使用表单的引用来创建FormData对象
   
     try {
-      const response = await fetch('/submit-game', { // 用fetch发送POST请求
+      // const response = await fetch('/submit-game', { // 用fetch发送POST请求
+        const response = await fetch('http://localhost:5001/submit-game', {
         method: 'POST',
         body: formData,
       });
@@ -180,7 +181,7 @@ export default function Home() {
         </form>
         <div>{submissionMessage}</div>
 
-        {Object.entries(selectedImages).map(([id, src]) => (
+        {/* {Object.entries(selectedImages).map(([id, src]) => (
           <Image
             key={id}
             src={src}
@@ -188,7 +189,7 @@ export default function Home() {
             width={500}
             height={500}
           />
-        ))}
+        ))} */}
       </div>
     </main>
   );
