@@ -1,7 +1,10 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
+import {AppProvider} from "@/components/AppContext";
+import Header from "@/components/layout/Header";
+import { Roboto } from 'next/font/google'
+import './globals.css'
+import {Toaster} from "react-hot-toast";
 
-const inter = Inter({ subsets: ["latin"] });
+const roboto = Roboto({ subsets: ['latin'], weight: ['400', '500', '700'] })
 
 export const metadata = {
   title: "Create Your Game",
