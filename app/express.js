@@ -62,3 +62,25 @@ module.exports = router;
 
 //-------------------------------------------------------------------------------
 
+const express = require('express');
+const router = express.Router();
+
+// Endpoint for managing character images
+router.post('/characters', (req, res) => {
+  // Logic to handle uploading character images
+  res.status(200).json({ message: 'Character images uploaded successfully' });
+});
+
+// Endpoint for managing item images
+router.post('/items', (req, res) => {
+  // Logic to handle uploading item images
+  res.status(200).json({ message: 'Item images uploaded successfully' });
+});
+
+// Endpoint for managing background images
+router.post('/backgrounds', (req, res) => {
+  // Logic to handle uploading background images
+  res.status(200).json({ message: 'Background images uploaded successfully' });
+});
+
+module.exports = router;

@@ -3,24 +3,44 @@ import { useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
-  const [selectedImages, setSelectedImages] = useState({});
+  const [backgroundImage, setBackgroundImage] = useState(null);
+  const [itemImages, setItemImages] = useState([]);
+  const [characterImages, setCharacterImages] = useState([]);
 
-  const handleImageUpload = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    const id = event.target.id;
+  const handleBackgroundUpload = (event) => {
+    setBackgroundImage(URL.createObjectURL(event.target.files[0]));
+  };
 
-    reader.onloadend = () => {
-      setSelectedImages((prevState) => ({ ...prevState, [id]: reader.result }));
-    };
+  const handleItemUpload = (event) => {
+    const files = event.target.files;
+    if (files.length !== 5) {
+      alert('Please upload exactly 5 item images.');
+      return;
+    }
+    setItemImages(Array.from(files).map(file => URL.createObjectURL(file)));
+  };
 
-    reader.readAsDataURL(file);
+  const handleCharacterUpload = (event) => {
+    const files = event.target.files;
+    if (files.length !== 4) {
+      alert('Please upload exactly 4 character images.');
+      return;
+    }
+    setCharacterImages(Array.from(files).map(file => URL.createObjectURL(file)));
+  };
+
+  const handleSubmit = () => {
+    // Logic to submit the uploaded images to the server and store them in the database
+    // You would typically make a POST request to your backend API here
+    console.log('Background Image:', backgroundImage);
+    console.log('Item Images:', itemImages);
+    console.log('Character Images:', characterImages);
   };
 
   return (
     <main className="flex flex-col items-center justify-center min-h-screen py-2">
       <div className="flex flex-col items-center justify-center w-full max-w-md px-4 py-8 bg-white shadow-md">
-        <form className="w-full space-y-4">
+        <section className="w-full space-y-4">
           <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
             <label
               htmlFor="backgroundImage"
@@ -31,123 +51,74 @@ export default function Home() {
             <input
               type="file"
               id="backgroundImage"
-              onChange={handleImageUpload}
+              onChange={handleBackgroundUpload}
+              accept="image/*"
               className="px-3 py-2 border border-blue-300"
             />
+            {backgroundImage && (
+              <Image
+                src={backgroundImage}
+                alt="Uploaded Background Image"
+                width={500}
+                height={500}
+              />
+            )}
           </div>
+        </section>
 
+        <section className="w-full space-y-4">
           <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="itemImage">Upload Image for Your Item1:</label>
-            <input type="file" id="item1" onChange={handleImageUpload} />
-          </div>
-
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="itemImage2">Upload Image for Your Item2:</label>
-            <input type="file" id="item2" onChange={handleImageUpload} />
-          </div>
-
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="itemImage3">Upload Image for Your Item3: </label>
-            <input type="file" id="item3" onChange={handleImageUpload} />
-          </div>
-
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="itemImage4">Upload Image for Your Item4: </label>
-            <input type="file" id="item4" onChange={handleImageUpload} />
-          </div>
-
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="character1">Upload Image for Character 1: </label>
-            <input type="file" id="character1" onChange={handleImageUpload} />
-            <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-              <label htmlFor="character1Items">Select Items for Character 1:</label>
-              <select multiple id="character1Items" className="mb-2 font-bold text-lg text-gray-900">
-                <option value="item1">Item 1</option>
-                <option value="item2">Item 2</option>
-                <option value="item3">Item 3</option>
-                <option value="item4">Item 4</option>
-              </select>
+            <label htmlFor="itemImages">Upload Image for Your Items (5 images):</label>
+            <input
+              type="file"
+              id="itemImages"
+              onChange={handleItemUpload}
+              accept="image/*"
+              multiple
+            />
+            <div className="flex flex-wrap justify-center">
+              {itemImages.map((image, index) => (
+                <div key={index} className="m-2">
+                  <Image
+                    src={image}
+                    alt={`Uploaded Item Image ${index + 1}`}
+                    width={150}
+                    height={150}
+                  />
+                </div>
+              ))}
             </div>
           </div>
+        </section>
 
+        <section className="w-full space-y-4">
           <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="character2">Upload Image for Character 2: </label>
-            <input type="file" id="character1" onChange={handleImageUpload} />
-            <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-              <label htmlFor="character1Items">Select Items for Character 1:</label>
-              <select multiple id="character1Items" className="px-3 py-2 border border-gray-300">
-                <option value="item1">Item 1</option>
-                <option value="item2">Item 2</option>
-                <option value="item3">Item 3</option>
-                <option value="item4">Item 4</option>
-              </select>
+            <label htmlFor="characterImages">Upload Image for Your Characters (4 images):</label>
+            <input
+              type="file"
+              id="characterImages"
+              onChange={handleCharacterUpload}
+              accept="image/*"
+              multiple
+            />
+            <div className="flex flex-wrap justify-center">
+              {characterImages.map((image, index) => (
+                <div key={index} className="m-2">
+                  <Image
+                    src={image}
+                    alt={`Uploaded Character Image ${index + 1}`}
+                    width={150}
+                    height={150}
+                  />
+                </div>
+              ))}
             </div>
           </div>
+        </section>
 
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="character3">Upload Image for Character 3: </label>
-            <input type="file" id="character3" onChange={handleImageUpload} />
-            <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-              <label htmlFor="character1Items">Select Items for Character 1:</label>
-              <select multiple id="character1Items" className="px-3 py-2 border border-gray-300">
-                <option value="item1">Item 1</option>
-                <option value="item2">Item 2</option>
-                <option value="item3">Item 3</option>
-                <option value="item4">Item 4</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="character4">Upload Image for Character 4: </label>
-            <input type="file" id="character4" onChange={handleImageUpload} />
-            <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-              <label htmlFor="character1Items">Select Items for Character 1:</label>
-              <select multiple id="character1Items" className="px-3 py-2 border border-gray-300">
-                <option value="item1">Item 1</option>
-                <option value="item2">Item 2</option>
-                <option value="item3">Item 3</option>
-                <option value="item4">Item 4</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="timerLength">Select Timer's Length: </label>
-            <input type="number" id="timerLength" min="1" max="240" />
-          </div>
-
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="winnerScenario">
-              Fill Out Winner Screen Scenario1: 
-            </label>
-            <textarea id="winnerScenario" rows="4" cols="50"></textarea>
-          </div>
-
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="winnerScenario2">
-              Fill Out Winner Screen Scenario2: 
-            </label>
-            <textarea id="winnerScenario2" rows="4" cols="50"></textarea>
-          </div>
-
-          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
-            <label htmlFor="winnerScenario3">
-              Fill Out Winner Screen Scenario3: 
-            </label>
-            <textarea id="winnerScenario3" rows="4" cols="50"></textarea>
-          </div>
-        </form>
-
-        {Object.entries(selectedImages).map(([id, src]) => (
-          <Image
-            key={id}
-            src={src}
-            alt="Uploaded Image"
-            width={500}
-            height={500}
-          />
-        ))}
+        <button onClick={handleSubmit} className="mt-4 px-4 py-2 bg-blue-500 text-white rounded">
+          Submit
+        </button>
       </div>
     </main>
   );
