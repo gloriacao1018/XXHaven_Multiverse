@@ -1,5 +1,7 @@
 // upload.js
 
+const path = require('path');
+
 const multer = require('multer');
 // 设置存储配置
 const storage = multer.diskStorage({
@@ -25,4 +27,6 @@ const upload = multer({
       }
     }
   });
+
+module.exports = upload;
   
