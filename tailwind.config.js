@@ -12,22 +12,16 @@ export default withUt({
     fontFamily: {
       'roboto': ['Roboto', 'sans-serif'],
     },
-    extend: {
-      backgroundImage: {       
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-        "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
-      width: {
-        '900': '900px',
-      },
-      height: {
-        '600': '600px',
-      },
-      borderRadius: {
-        '30': '30px',
-      },
+    backgroundImage: {       
+      'heroImage' : "url('../app/assets/hero.svg')",
     },
+
+    extend: {
+      
+    },
+  },
+  corePlugins: {
+    space: true,
   },
   variants: {},
   plugins: [],
