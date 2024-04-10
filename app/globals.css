@@ -24,11 +24,24 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-  padding: 20px;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+label {
+  color: #805B51;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+input[type="text"]#gameName {
+  display: block;
+  width: 100%;
+  height: 40px; 
+  background-color: white;
 }

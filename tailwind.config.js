@@ -13,11 +13,9 @@ export default withUt({
       'roboto': ['Roboto', 'sans-serif'],
     },
     backgroundImage: {       
-      'heroImage' : "url('../app/assets/hero.svg')",
+      'heroImage' : "url('../app/assets/hero.png')",
     },
-
     extend: {
-      
     },
   },
   corePlugins: {
@@ -25,5 +23,4 @@ export default withUt({
   },
   variants: {},
   plugins: [],
-
 })
