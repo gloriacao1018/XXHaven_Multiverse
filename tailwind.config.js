@@ -12,10 +12,10 @@ export default withUt({
     fontFamily: {
       'roboto': ['Roboto', 'sans-serif'],
     },
-    backgroundImage: {       
-      'heroImage' : "url('../app/assets/hero.png')",
-    },
     extend: {
+      backgroundImage: {       
+        'heroImage' : "url('../app/assets/hero.png')",
+      },
     },
   },
   corePlugins: {
