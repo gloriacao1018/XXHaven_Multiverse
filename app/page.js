@@ -31,29 +31,49 @@ export default function Home() {
             STEP 1. GIVE IT A NAME & BACKGROUND
           </h1>
 
-          <div className="box">
-            <div className="flex flex-col">
-              <label htmlFor="gameName">Game Name</label>
-              <input
-                type="text"
-                id="gameName"
-                name="gameName"
-                className="textinput border-gray-300"
-                placeholder="Enter name"
-              />
+          <div className=" box flex flex-col">
+            <label htmlFor="gameName">Game Name</label>
+            <input
+              type="text"
+              id="gameName"
+              name="gameName"
+              className="textinput border-gray-300"
+              placeholder="Enter name"
+            />
 
-              <label htmlFor="gameBackground">
-                Upload Image for Game Background
-              </label>
+            <label htmlFor="gameBackground">
+              Upload Image for Game Background
+            </label>
 
-              <input
-                type="file"
-                id="backgroundImage"
-                name="backgroundImage"
-                onChange={handleImageUpload}
-                className="px-3 py-2 border border-blue-300"
-              />
+            {/* <input
+              type="file"
+              id="backgroundImage"
+              name="backgroundImage"
+              onChange={handleImageUpload}
+              className="px-3 py-2 border border-blue-300"
+            /> */}
+
+            <div id="drop-area">
+              <form class="my-form">
+                <p>
+                  Upload multiple files with the file dialog or by dragging and
+                  dropping images onto the dashed region
+                </p>
+                <input
+                  type="file"
+                  id="fileElem"
+                  multiple
+                  accept="image/*"
+                  onchange="handleFiles(this.files)"
+                />
+                <label class="button" for="fileElem">
+                  Select some files
+                </label>
+              </form>
             </div>
+
+            <button className="done-button">Done</button>
+            <button className="cancel-button">Cancel</button>
           </div>
         </div>
 
@@ -193,15 +213,14 @@ export default function Home() {
         <h1 className="font-roboto text-9xl font-medium">
           STEP 4. TIMER LENGTH
         </h1>
-        <div className="timer">
-          <input
-            type="number"
-            id="timerLength"
-            name="timerLength"
-            min="1"
-            max="240"
-          />
-        </div>
+        <input
+          className="timer border-gray-300"
+          type="number"
+          id="timerLength"
+          name="timerLength"
+          min="1"
+          max="240"
+        />
 
         <h1 className="font-roboto text-9xl font-medium">
           STEP 5. GIVE THE WINNER SOME COMPLIMENTS uwu
@@ -239,7 +258,6 @@ export default function Home() {
           VOILA
         </button>
         <Image className="bottom" src={foot} alt="bottom picture" />
-        
       </form>
     </main>
   );

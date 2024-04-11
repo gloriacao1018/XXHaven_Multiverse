@@ -64,6 +64,17 @@ input[type="text"]#gameName {
   background-color: #F2EAE6;
   margin-left: 20rem;
   margin-top: 10px;
+  box-sizing: border-box;
+}
+
+.textinput {
+  width: 50%;
+  height: 40px;
+  background-color: #F2EAE6;
+  border-radius: 6px;
+  margin:2px;
+  box-sizing: border-box;
+
 }
 
 .button {
@@ -74,6 +85,8 @@ input[type="text"]#gameName {
   color: white;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   margin-right: 20px;
+  padding: 10px;
+  cursor: pointer;
 }
 
 h1 {
@@ -112,7 +125,7 @@ textarea {
 
 .timer {
   width: 60%;
-  height: 100px;
+  height: 40px;
   border-radius: 10px;
   background-color: #F2EAE6;
   margin-left: 20rem;
@@ -127,10 +140,59 @@ textarea {
   background-position: center;
 }
 
-.textinput {
-  width: 60%;
+/* drag n drop */
+#drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 20px;
+  width: 480px;
+  font-family: sans-serif;
+  margin: 100px auto;
+  padding: 20px;
+}
+#drop-area.highlight {
+  border-color: purple;
+}
+p {
+  margin-top: 0;
+}
+.my-form {
+  margin-bottom: 10px;
+}
+#gallery {
+  margin-top: 10px;
+}
+#gallery img {
+  width: 150px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.button:hover {
+  background: #ddd;
+}
+#fileElem {
+  display: none;
+}
+.done-button, .cancel-button {
+  position: absolute;
+  bottom: 10px; 
+  right: 10px; 
+  width: 160px;
   height: 40px;
-  background-color: #F2EAE6;
   border-radius: 6px;
-  margin:2px;
+  background-color: #A48B83;
+  color: white;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.cancel-button {
+  right: 80px; 
+  width: 160px;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid #A48B83;
+  background: transparent;
+  color: #A48B83;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
