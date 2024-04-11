@@ -3,16 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 173, 216, 230;
-  --background-end-rgb: 173, 216, 230;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 255, 255, 255;
+  --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb:173, 216, 230;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 110;
+    --foreground-rgb:0, 0, 0;
+    --background-start-rgb: 255, 255, 255;
+    --background-end-rgb: 255, 255, 255;
   }
 }
 
@@ -24,11 +24,24 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-  padding: 20px;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+label {
+  color: #805B51;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+input[type="text"]#gameName {
+  display: block;
+  width: 100%;
+  height: 40px; 
+  background-color: white;
 }
