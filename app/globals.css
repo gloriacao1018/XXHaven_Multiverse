@@ -10,7 +10,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --foreground-rgb:0, 0, 0;
+    --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 255, 255, 255;
     --background-end-rgb: 255, 255, 255;
   }
@@ -33,16 +33,16 @@ body {
 }
 
 label {
-  color: #805B51;
-  font-family: 'Roboto', sans-serif;
+  color: #805b51;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
   font-size: 16px;
-  margin: 20px 15px ;
+  margin: 20px 15px;
 }
 
 .achievements {
-  color: #805B51;
-  font-family: 'Roboto', sans-serif;
+  color: #805b51;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
   font-size: 16px;
   margin-left: 20rem;
@@ -51,18 +51,58 @@ label {
 input[type="text"]#gameName {
   display: block;
   width: 100%;
-  height: 40px; 
+  height: 40px;
   background-color: white;
 }
 
 .cover {
-  background-image: url('../app/assets/hero.png');
+  background-image: url("../app/assets/hero.png");
   width: 100%;
   height: 100%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
+
+.mount {
+  background-image: url("../app/assets/time.png");
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-bottom: 30px;
+  padding-top: 70px;
+}
+
+.bottom {
+  background-image: url("../app/assets/bottom.png");
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-bottom: 700px;
+  padding-top: 70px;
+}
+
+.add-button {
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  color: #686361;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 60px;
+  margin-left: 100px;
+}
+
+.add-button::before {
+  content: "+";
+  font-size: 100px;
+}
+
+
 
 .background-box {
   display: flex;
@@ -75,18 +115,20 @@ input[type="text"]#gameName {
   width: 60%;
   height: 100%;
   border-radius: 10px;
-  background-color: #F2EAE6;
+  background-color: #f2eae6;
   margin-left: 20rem;
   margin-top: 10px;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
 }
 
 .textinput {
- display: inline-block;
+  display: inline-block;
   height: 50px;
   width: 100px;
-  background-color: #F2EAE6;
+  background-color: #f2eae6;
   border-radius: 6px;
-  margin-left:20px;
+  margin-left: 20px;
   font-size: 16px;
   padding: 10px;
   box-sizing: content-box;
@@ -97,7 +139,7 @@ input[type="text"]#gameName {
   width: 160px;
   height: 40px;
   border-radius: 6px;
-  background-color: #A48B83;
+  background-color: #a48b83;
   color: white;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   padding: 10px;
@@ -116,7 +158,7 @@ input[type="text"]#gameName {
 }
 
 h1 {
-  color: #B39D97;
+  color: #b39d97;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   font-size: larger;
   font-weight: 600;
@@ -125,47 +167,55 @@ h1 {
   letter-spacing: 1px;
 }
 
-.dropdown-menu {
-  list-style: none; 
-  overflow: hidden; 
-  height: 172px;
-  background-color: #f4f7fa;
-  width: 60%;
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
-  -webkit-transition: height 0.3s ease;
-  transition: height 0.3s ease;
+.dropdown {
+  min-width: 350px;
 }
 
-.dropdown-menu.closed {
-  height: 30px;
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  font-size: 1.15rem;
+  padding: 0.675em 6em 0.675em 1em;
+  background-color: #fff;
+  border: 1px solid #caced1;
+  border-radius: 0.25rem;
+  color: #000;
+  cursor: pointer;
 }
 
-
-.dropdown-menu option {
-  border-bottom: 1px solid #afafaf;
-  color: #474747;
-  padding: 10px;
+.dropdown::before,
+.dropdown::after {
+  --size: 0.3rem;
+  position: absolute;
+  content: "";
+  right: 1rem;
+  pointer-events: none;
 }
 
-.dropdown-menu option:first-child {
-  content: "\25BC";
-  float: right;
-  margin-left: -30px;
-  margin-right: 5px;
+.dropdown::before {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-bottom: var(--size) solid black;
+  top: 40%;
 }
 
+.dropdown::after {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-top: var(--size) solid black;
+  top: 55%;
+}
 
 label {
-  color: #B39D97;
+  color: #b39d97;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 textarea {
   width: 60%;
   height: 210px;
-  background-color: #F2EAE6;
+  background-color: #f2eae6;
   border-radius: 10px;
   margin-left: 20rem;
 }
@@ -175,7 +225,7 @@ textarea {
   width: 160px;
   height: 40px;
   border-radius: 6px;
-  background-color: #A48B83;
+  background-color: #a48b83;
   color: white;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   margin: 30px auto 0;
@@ -185,7 +235,7 @@ textarea {
   width: 60%;
   height: 40px;
   border-radius: 10px;
-  background-color: #F2EAE6;
+  background-color: #f2eae6;
   margin-left: 20rem;
   margin-top: auto;
 }
@@ -202,8 +252,8 @@ textarea {
   border: 2px dashed #ccc;
   border-radius: 10px;
   width: 90%;
-  height: 100% ;
-  font-family: 'roboto', sans-serif;
+  height: 100%;
+  font-family: "roboto", sans-serif;
   padding: 200px;
   margin: 10px;
   display: flex;
@@ -220,24 +270,25 @@ p {
   margin-top: 0;
   align-items: center;
   text-align: center;
-  color: #805B51;
+  color: #805b51;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .button-container {
   display: flex;
   justify-content: space-between;
-  position: relative; 
+  position: relative;
   bottom: 2px;
   left: 20rem;
-  width: 50%; 
+  width: 50%;
 }
 
-.done-button, .cancel-button {
+.done-button,
+.cancel-button {
   width: 160px;
   height: 40px;
   border-radius: 6px;
-  background-color: #A48B83;
+  background-color: #a48b83;
   color: white;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
@@ -246,9 +297,9 @@ p {
   width: 160px;
   height: 40px;
   border-radius: 6px;
-  border: 1px solid #A48B83;
+  border: 1px solid #a48b83;
   background: transparent;
-  color: #A48B83;
+  color: #a48b83;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
@@ -277,4 +328,16 @@ p {
 #item3,
 #item4 {
   display: none;
+}
+
+.down {
+  display: block;
+  margin-left: auto;
+  margin-top: 30px;
+  margin-right: auto;
+  text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.item-box {
+  margin-left: 40px;
 }
