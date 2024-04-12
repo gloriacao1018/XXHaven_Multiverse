@@ -38,7 +38,7 @@ export default function Home() {
               type="text"
               id="gameName"
               name="gameName"
-              className="textinput border-gray-300"
+              className="textinput"
               placeholder="Enter name"
             />
 

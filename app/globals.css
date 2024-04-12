@@ -71,11 +71,9 @@ input[type="text"]#gameName {
   align-items: center;
 }
 
-
-
 .box {
   width: 60%;
-  height: 600px;
+  height: 100%;
   border-radius: 10px;
   background-color: #F2EAE6;
   margin-left: 20rem;
@@ -83,23 +81,38 @@ input[type="text"]#gameName {
 }
 
 .textinput {
-  width: 50%;
-  height: 40px;
+ display: inline-block;
+  height: 50px;
+  width: 100px;
   background-color: #F2EAE6;
   border-radius: 6px;
-  margin:2px;
+  margin-left:20px;
+  font-size: 16px;
+  padding: 10px;
+  box-sizing: content-box;
 }
 
 .button {
+  display: inline-block;
   width: 160px;
   height: 40px;
   border-radius: 6px;
   background-color: #A48B83;
   color: white;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  margin-right: 20px;
   padding: 10px;
   cursor: pointer;
+  align-items: center;
+  margin: 20px;
+  text-align: center;
+}
+
+.button:hover {
+  background: #e08080;
+}
+
+#fileElem {
+  display: none;
 }
 
 h1 {
@@ -117,7 +130,7 @@ h1 {
   overflow: hidden; 
   height: 172px;
   background-color: #f4f7fa;
-  width: 200px;
+  width: 60%;
   margin: 0 auto;
   padding: 0;
   text-align: center;
@@ -185,36 +198,30 @@ textarea {
   background-position: center;
 }
 
-/* drag n drop */
 #drop-area {
   border: 2px dashed #ccc;
   border-radius: 10px;
-  width: 50%;
-  height: 260px ;
+  width: 90%;
+  height: 100% ;
   font-family: 'roboto', sans-serif;
   padding: 200px;
   margin: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 
 #drop-area.highlight {
   border-color: purple;
 }
 
-
-
 p {
   margin-top: 0;
-}
-
-.button:hover {
-  background: #e08080;
-}
-
-#fileElem {
-  display: none;
+  align-items: center;
+  text-align: center;
+  color: #805B51;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .button-container {
@@ -248,7 +255,8 @@ p {
 #item-drop-area {
   border: 2px dashed #ccc;
   border-radius: 20px;
-  width: 80px;
+  width: 60%;
+  height: 100%;
   font-family: sans-serif;
   padding: 20px;
 }
