@@ -39,3 +39,17 @@ export const handleSubmit = async (event) => {
     console.error('Submission error:', error);
   }
 };
+
+
+(function() {
+  const dropdowns = document.querySelectorAll('#character1Items, #character2Items, #character3Items, #character4Items');
+
+  // Loop over the dropdown menus and bind the change event to each one
+  dropdowns.forEach(function(dropdown) {
+    dropdown.addEventListener('change', function() {
+      /*  Toggle the CSS closed class which reduces the height of the UL thus 
+          hiding all LI apart from the first */
+      this.parentNode.parentNode.classList.toggle('closed');
+    }, false);
+  });
+})();
