@@ -135,6 +135,17 @@ newGame.save()
   .catch(err => res.status(400).json('Error: ' + err));
 });
 
+// 删除游戏的API
+app.delete('/delete-game/:id', async (req, res) => {
+  try {
+    const result = await Game.findByIdAndDelete(req.params.id);
+    if (result) res.send({ message: 'Game deleted successfully' });
+    else res.status(404).send({ message: 'Game not found' });
+  } catch (error) {
+    res.status(500).send({ message: 'Error deleting game' });
+  }
+});
+
 const port = process.env.PORT || 5001;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

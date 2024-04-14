@@ -7,6 +7,7 @@ import Image from "next/image";
 export default function Home() {
   const [selectedImages, setSelectedImages] = useState({});
   const [submissionMessage, setSubmissionMessage] = useState(""); 
+  const [gameId, setGameId] = useState(null); // 用来存储提交后返回的游戏ID
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -37,7 +38,8 @@ export default function Home() {
         // console.log(result);
         const gameData = await response.json(); // 解析返回的游戏数据
         console.log(gameData);
-        // setSubmissionMessage('Data saved successfully!');
+        setGameId(gameData._id); // 存储游戏ID
+        console.log('Game ID set:', gameData._id); // 打印以确认ID被设置
         setSubmissionMessage(`Data saved successfully! Game ID: ${gameData._id}`);
         // 这里假设返回的`gameData`包含一个`_id`字段，即MongoDB自动生成的ID
       } else {
@@ -46,14 +48,22 @@ export default function Home() {
     } catch (error) {
       console.error('Submission error:', error);
     }
-  
-    // if (response.ok) {
-    //   const result = await response.json();
-    //   console.log(result);
-    //   setSubmissionMessage('Data saved successfully!');
-    // } else {
-    //   throw new Error('Network response was not ok.');
-    // }
+  };
+
+  const handleDelete = async () => {
+    console.log('Delete button clicked, gameId:', gameId); // 确认函数触发并输出gameId
+    if (!gameId) return;
+    try {
+      const response = await fetch(`http://localhost:5001/delete-game/${gameId}`, { method: 'DELETE' });
+      if (response.ok) {
+        setSubmissionMessage('Game deleted successfully');
+        setGameId(null); // 清除存储的ID
+      } else {
+        throw new Error('Failed to delete the game');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+    }
   };
 
   return (
@@ -178,6 +188,7 @@ export default function Home() {
             <textarea id="winnerScenario3" name="winnerScenario3" rows="4" cols="50"></textarea>
           </div>
           <button type="submit">Submit</button>
+          <button onClick={handleDelete} disabled={!gameId}>Delete</button>
         </form>
         <div>{submissionMessage}</div>
 
