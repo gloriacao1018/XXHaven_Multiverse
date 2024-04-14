@@ -1,20 +1,34 @@
 //server.js 
 
+// 引入必要的模块
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const mongoose = require('mongoose');
-
 const cors = require('cors');
+const path = require('path');
+
+// 初始化Express应用
 const app = express();
 
+// 配置CORS策略允许来自指定源的跨域请求
 app.use(cors({
   origin: 'http://localhost:3000'
 }));
-const upload = require('./upload');
 
+// 设置请求体解析中间件
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// 引入文件上传配置模块
+const upload = require('./upload');
+
+// 设置静态文件服务目录
+app.use(express.static(path.join(__dirname, '..', 'public')));
+
+// 设置EJS为模板引擎并配置视图文件的目录
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '../views'));
 
 // MongoDB 连接字符串
 const db = 'mongodb+srv://KitKatGo-chai:kitkatgochai@cluster0.xnn1ffb.mongodb.net/KitKatGo?retryWrites=true&w=majority&appName=Cluster0';
@@ -146,6 +160,24 @@ app.delete('/delete-game/:id', async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 5001;
+// 获取游戏的API
+app.get('/play-game/:id', async (req, res) => {
+  try {
+    const game = await Game.findById(req.params.id);
+    if (game) {
+      // 使用EJS模板渲染页面，传入游戏数据
+      res.render('GameTemplate', { game: game });
+    } else {
+      res.status(404).send('Game not found');
+    }
+  } catch (error) {
+    res.status(500).send('Error fetching game');
+  }
+});
 
-app.listen(port, () => console.log(`Server running on port ${port}`));
+
+// 启动服务器监听端口
+const port = process.env.PORT || 5001;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});

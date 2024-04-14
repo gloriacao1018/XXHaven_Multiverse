@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>BUILD YOUR OWN GAME</title>
+    <script type=module>
+
+import zim from "https://zimjs.com/cdn/015/zim_game";
+
+const templateAssets = ["BabyDoll.ttf", 
+"titleBackground.png","gameOver.jpg", "defaultBackground.png","rules.png", "help.png",
+
+"blackcat.png", "orangecat.png", "whitecat.png","tuxcat.png", 
+
+"milkdemo.png","fooddemo.png","brushdemo.png","toydemo.png", "catnipdemo.png",
+
+"backgroundMusic.mp3","ding.mp3","lose.mp3","pickup.mp3"];
+const path = "templateAssets/"
+
+new Frame(FIT, 1024, 768, light, dark, ready, templateAssets, path);
+function ready() {
+
+//OPENING -----------------------------------------------------------------------
+    function showPart1() {
+
+        let part1 = new Container(W, H).center();
+        let titleBackground = new Pic("titleBackground.png")
+            .center()
+            .sca(.90)
+            .addTo(part1);
+
+        STYLE = {
+            font: "BabyDoll.ttf",
+        };
+
+        let gameTitle = new Label({
+            text: "Build Your Own Game!",
+            size: 80,
+            color: white,
+            shadowColor: black,
+            shadowBlur:20,
+            // backgroundColor:white,
+            // backgroundBorderColor:black,
+            outlineWidth:4,
+            padding:50,
+        }).addTo(part1).center().mov(0,-100);
+
+        let customTitle = new Label({
+            text:"",
+            size:60,
+            outlineWidth:4,
+            color:white,
+            shadowColor:black,
+            shadowBlur:20
+        }).addTo(part1).center();
+
+        let play = new Button({
+            width: 120,
+            height: 60,
+            color: black,
+            label: "PLAY",
+            backgroundColor: "#FFDE59",
+        })
+            .pos(0, 120, CENTER, CENTER)
+            .hov()
+            .top()
+            .addTo(part1);
+
+        play.on("click", () => {
+            new Aud("backgroundMusic.mp3").play({ volume: 0.1, loop: true });
+            part1.animate({ alpha: 0 }, 1, null, () => {
+                part1.dispose();
+                showPart2();
+                S.update();
+            });
+        });
+
+        // let customize = new Button({
+        //     width: 500,
+        //     height: 60,
+        //     label: "Make your own game",
+        //     backgroundColor: "#FFDE59",
+        // })
+        //     .pos(0, 160, CENTER, CENTER)
+        //     .hov()
+        //     .top()
+        //     .addTo(part1);
+
+        // customize.on("click", () => {
+        //     window.location.href = "/page.js";
+        // });
+
+    };
+    showPart1();
+
+
+    function showPart2() {
+
+        let part2 = new Container(W, H).center();
+        let rules = new Pic("rules.png").center().sca(.75).addTo(part2).mov(180,140);
+
+       let intructionTitle = new Label({
+            text: "Rules",
+            size:60,
+            outlineWidth:3
+        }).center().mov(0,-150).addTo(part2);
+
+        let instructions = new Label({
+            text:"Memorize what each character likes and serve as many as you can before time runs out! Log your findings in the ? to help you with your progress!",
+            labelWidth:750,
+            splitWords:true
+        }).center().addTo(part2);
+
+        part2.animate({ alpha: 1 }, 1, null, () => {
+            let next = new Button({
+                width: 120,
+                height: 60,
+                color:black,
+                label: "Start!",
+                backgroundColor: "#FFDE59",
+            })
+                .pos(100, 100, RIGHT, BOTTOM)
+                .addTo(part2);
+            
+            next.on("click", () => {
+                part2.animate({ alpha: 0 }, 1, null, () => {
+                    part2.dispose();
+                    showPart4();
+                    S.update();
+                });
+            });
+        });
+    };
+
+//AUDIO---------------------------------------------------------------------------
+        const pickup = new Aud({
+            file:"pickup.mp3",
+            volume:.1,
+            interrupt:"none",
+            maxNum:1
+        });
+
+        const ding = new Aud({
+            file:"ding.mp3",
+            volume:.1,
+            interrupt:"none",
+            maxNum:1
+        });
+
+        const lose = new Aud({
+            file:"lose.mp3",
+            volume:.1,
+            interrupt:"none",
+            maxNum:1
+        });
+
+//MAIN GAME-----------------------------------------------------------------------
+    
+    function showPart4() {
+        let continueGeneratingCharacters = true;
+        let isGameOver = false;
+        let finalScore = 0;
+
+        const gameContainer = new Container(W,H).center();
+        const gameBackground = new Pic("defaultBackground.png").scaleTo(gameContainer).center();
+
+        let score = new Scorer({
+            font:"BabyDoll.ttf",
+            backgroundColor:orange,
+            borderColor: black,
+            borderWidth:3,
+            width:60
+        }).pos(50,50,RIGHT);
+
+        let timer = new Timer({
+            time:120,
+            startPaused:true,
+            font:"BabyDoll.ttf",
+            backgroundColor:yellow,
+            borderColor: black,
+            borderWidth:3,
+            width:60
+        }).pos(50,50);
+
+        let instructions = new Label({
+            font:"BabyDoll.ttf",
+            text:" Ready to start serving! Click anywhere to begin the fun!",
+            backgroundColor: yellow,
+            lineWidth:500,
+            shadowBlur:14,
+            backgroundBorderColor:black,
+            backgroundBorderWidth:3
+        }).pos(0,100,CENTER,TOP).addTo();
+
+        S.on("stagemousedown", ()=>{              
+            timer.start();    
+            instructions.dispose();
+            startGame()
+        }, null, true);
+
+        S.update();
+
+//CATBIBLE------------------------------------------------------------------------
+        
+const helpContainer = new Container(70, 70).pos(150, 50, RIGHT, TOP);
+const helpButton = new Pic("help.png")
+.addTo(helpContainer)
+.scaleTo(helpContainer)
+.hov(1)
+.tap(() => {
+        textEditor.show();
+    });
+
+const textEditor = new TextEditor({
+    titleBar: "Write your findings of the characters interests!",
+    draggable: false,
+    width:600,
+    fieldHeight:400
+});
+
+
+
+//ADD RANDOM CHARACTERS/ GAME INITIALIZATION-------------------------------------------------------
+    
+    let spotA = new Container(150, 300).loc(110, 400).reg(CENTER);
+    let spotB = new Container(150, 300).loc(350, 400).reg(CENTER);
+    let spotC = new Container(150, 300).loc(550, 400).reg(CENTER);
+    let spotD = new Container(150, 300).loc(800, 400).reg(CENTER);
+    let spots = [spotA, spotB, spotC, spotD];
+
+    let activeCharacters = [];
+
+    function startGame(){  
+
+        function placeRandomCharacter(spot) {
+
+            if (!continueGeneratingCharacters) {
+                return;
+            }
+
+            let characters = [
+                { pic: "blackcat.png", accepting: ["request1", "request3", "request2"], time: 20 },
+                { pic: "orangecat.png", accepting: ["request2", "request1", "request4"], time: 20 },
+                { pic: "whitecat.png", accepting: ["request4", "request1", ], time: 15 },
+                { pic: "tuxcat.png", accepting: ["request3", "request4", "request2"], time: 12 }
+            ];
+
+            if (spot.children.length === 0) {
+
+                let originalCharacterData = pluck(characters);              
+                let randomCharacterData = copy(originalCharacterData); 
+    
+                let randomCharacterPic = new Pic(randomCharacterData.pic).animate({
+                    props: [
+                    { props: { y: -10 }, time: .2, ease: "bounceIn" },
+                    { props: { y: 20 }, time: .3, ease: "bounceOut" }
+                    ]
+                });
+
+                let randomCharacterTimer = new Timer({
+                    font:"BabyDoll.ttf",
+                    backgroundColor:white,
+                    borderColor: black,
+                    borderWidth:3,
+                    width:40,
+                    height:40,
+                    time: randomCharacterData.time
+                }).center();
+
+                randomCharacterPic.addTo(spot).scaleTo(spot);
+                randomCharacterTimer.addTo(spot);
+                randomCharacterTimer.pos((randomCharacterPic.x+randomCharacterPic.height)/2 , (randomCharacterPic.y+randomCharacterPic.height)/2-100);
+
+                activeCharacters.push({ pic: randomCharacterPic, data: randomCharacterData, spot: spot, timer: randomCharacterTimer });
+     
+                timeout(randomCharacterData.time,()=>{
+                    if (!isGameOver) {
+                            lose.play();
+                        randomCharacterPic.animate({
+                        props:{x:-1024, y:50}, 
+                        time: 3, 
+                        ease:"backOut",
+                        });
+
+                        randomCharacterTimer.removeFrom(spot);
+
+                        timeout(1.5,()=>{
+                            randomCharacterPic.removeFrom(spot);
+                            placeRandomCharacter(spot);
+                        }); 
+                    };
+                });
+            };
+        };
+
+        function updateTimer() {
+            loop(activeCharacters,character=>{
+                let timer = character.timer;
+                if (timer.time <= 3) {
+                    timer.backgroundColor = "red";
+                } else if (timer.time <= 7) {
+                    timer.backgroundColor = "orange";
+                } else {
+                    timer.backgroundColor = "white";
+                }
+            });
+        };
+
+        Ticker.add(updateTimer, 1);
+
+        loop(spots,spot=>{
+            placeRandomCharacter(spot);
+        }); 
+    // };
+   
+//ITEMS TO Character---------------------------------------------------------------------
+new Rectangle({
+    width:W,
+    height:180,
+    color: brown,
+    borderColor:black,
+    borderWidth:3}).pos(0,0, CENTER,BOTTOM).addTo(S);
+
+        const item1 = new Container(100, 100).loc(203, 578);
+        const item2 = new Container(100, 100).loc(406, 608);
+        const item3 = new Container(100, 100).loc(697, 624);
+        const item4 = new Container(100, 100).loc(562, 606);
+
+        let item,request1,request2,request3,request4;
+
+        loop(50, () => {
+            request1 = new Pic("milkdemo.png").addTo(item1).scaleTo(item1).drag();
+            request1.name = "request1";
+            request2 = new Pic("fooddemo.png").addTo(item2).scaleTo(item2).drag();
+            request2.name = "request2";
+            request3 = new Pic("brushdemo.png").addTo(item3).scaleTo(item3).drag();
+            request3.name = "request3";
+            request4 = new Pic("catnipdemo.png").addTo(item4).scaleTo(item4).drag();
+            request4.name = "request4";
+
+
+            loop([request1, request2, request3,request4],item=>{
+                    item.startX = item.x;
+                    item.startY = item.y;
+                    item.on("pressup", () => checkItem(item));
+                    S.update();
+                });
+        });
+
+        function checkItem(item, activeCharacter) {
+
+            loop(activeCharacters,activeCharacter=>{
+
+                if (item.hitTestBounds(activeCharacter.pic)) {
+                    zog("Hit Detected with", activeCharacter.data.accepting);
+
+                    if (activeCharacter.data.accepting.includes(item.name)) {
+                    
+                    item.dispose();
+                    zog(item.name);
+                    pickup.play();
+                    
+                    activeCharacter.data.accepting = activeCharacter.data.accepting.filter(i => i !== item.name);
+                    zog(activeCharacter.data.accepting);
+
+                        if (activeCharacter.data.accepting.length === 0) {
+
+                            animateCharacterOffScreen(activeCharacter.pic);
+                            activeCharacter.timer.removeFrom(activeCharacter.spot);
+
+                            timeout(4,()=>{
+                                activeCharacter.pic.removeFrom(activeCharacter.spot);
+                                placeRandomCharacter(activeCharacter.spot); 
+                            }, 3);
+                            
+                            score.score++;
+                            finalScore = score.score;
+                            zog(finalScore);
+                            zog(score.score);
+                            S.update();
+                        }                
+                    }else{
+                        item.animate({ x: item.startX, y: item.startY }, 0.3);
+                    } 
+                }else {            
+                    item.animate({ x: item.startX, y: item.startY }, 0.3);
+                }
+            });
+        };
+
+        function animateCharacterOffScreen(character) {
+            ding.play();
+            character.animate({
+                props: [
+                    { props: { y: character.y - 10 }, time: .2, ease: "bounceIn" },
+                    { props: { y: character.y + 20 }, time: .3, ease: "bounceOut" },
+                    { props: { x: -1024, y: 50 }, time: 3, ease: "backInOut" }
+                ]
+            });
+        };
+    };
+//GAME END--------------------------------------------------------------------
+        
+        timer.on("complete", () => {
+            zog(finalScore);
+            continueGeneratingCharacters = false;
+            isGameOver = true;
+            const savedFinalScore = finalScore; 
+            S.removeAllChildren();
+            S.update();
+            displayWinningComment(savedFinalScore);
+            winningPage(savedFinalScore);
+        });
+
+        const winningComments = {
+            0: "Congratulations on your progress! Keep up the great work!",
+            6: "You're making excellent strides! Keep pushing forward!",
+            16: "Outstanding job! You're really excelling!"
+        };
+        let comment = "";
+        function displayWinningComment(score) {
+
+            if (score <= 0) {
+                comment = winningComments[0];
+            } else if (score >= 1 && score <= 5) {
+                comment = winningComments[6];
+            } else {
+                comment = winningComments[16];
+            }
+
+            return comment;
+        }
+
+
+        function winningPage(score){
+
+            const winningPage = new Container(H,W).center();
+            const winning = new Pic("rules.png").center().scaleTo(winningPage).alp(0).animate({alpha: 1}, 1);
+
+            STYLE = {
+                font:"BabyDoll.ttf"
+            };
+
+            const finalScore = new Label({
+                text:"Your final score is",
+                size:60
+            }).centerReg().pos(0,180,CENTER,TOP).alp(0).sca(0).animate({scale:1,alpha:1}, 1.7, "elasticOut",null,null,1);
+
+            const scoreText = new Label({
+                text:score,
+                size:72,
+                backgroundColor:orange,
+                corner:10
+            }).centerReg().pos(0,280,CENTER,TOP).alp(0).sca(0).animate({scale:1,alpha:1}, 1.7, "elasticOut",null,null,2);
+
+            const commentWords = new Label({
+                text:comment,
+                color:black,
+                labelWidth:800,
+                labelHeight:180,
+                align:CENTER,
+                valign:MIDDLE,
+                splitWords:true
+            }).pos(0,180,CENTER,BOTTOM).alp(0).animate({alpha: 1}, 1,null,null,null,3);
+
+            const restart = new Button({
+                width:240, 
+                height:60,
+                label: "PLAY AGAIN",
+                backgroundColor:"#FFDE59",
+            }).pos(0, 50, CENTER, BOTTOM).alp(0).animate({alpha: 1}, 1,null,null,null,4).top();
+
+            restart.on("click", () => {
+                // window.location.reload(); //Dan said no lol
+                showPart4();
+                S.update();
+            });
+        }
+    }
+
+}//end ready
+
+</script>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+</head>
+
+<body></body>
+
+</html>

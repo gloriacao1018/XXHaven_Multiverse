@@ -66,6 +66,11 @@ export default function Home() {
     }
   };
 
+  const handleGenerateGame = () => {
+    if (!gameId) return;
+    window.open(`http://localhost:5001/play-game/${gameId}`, '_blank'); // 在新标签页中打开游戏
+  };
+
   return (
     <main className="flex flex-col items-center justify-center min-h-screen py-2">
       <div className="flex flex-col items-center justify-center w-full max-w-md px-4 py-8 bg-white shadow-md">
@@ -189,6 +194,7 @@ export default function Home() {
           </div>
           <button type="submit">Submit</button>
           <button onClick={handleDelete} disabled={!gameId}>Delete</button>
+          <button onClick={handleGenerateGame} disabled={!gameId}>NewGame</button>
         </form>
         <div>{submissionMessage}</div>
 
