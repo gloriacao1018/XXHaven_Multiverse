@@ -38,6 +38,7 @@ label {
   font-weight: 500;
   font-size: 16px;
   margin: 20px 15px;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .achievements {
@@ -49,10 +50,16 @@ label {
 }
 
 input[type="text"]#gameName {
-  display: block;
-  width: 100%;
-  height: 40px;
-  background-color: white;
+  display: inline-block;
+  width: 90%;
+  height: 30px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  padding: 10px;
+  box-sizing: content-box;
 }
 
 .cover {
@@ -87,22 +94,23 @@ input[type="text"]#gameName {
 }
 
 .add-button {
-  display: inline-block;
+  display: flex;
   justify-content: center;
   align-items: center;
+  width: 96%;
   color: #686361;
   background-color: transparent;
   cursor: pointer;
   padding: 60px;
-  margin-left: 100px;
 }
 
 .add-button::before {
   content: "+";
   font-size: 100px;
+  justify-content: center;
+  align-items: center;
+  
 }
-
-
 
 .background-box {
   display: flex;
@@ -120,18 +128,6 @@ input[type="text"]#gameName {
   margin-top: 10px;
   margin-bottom: 40px;
   padding-bottom: 40px;
-}
-
-.textinput {
-  display: inline-block;
-  height: 50px;
-  width: 100px;
-  background-color: #f2eae6;
-  border-radius: 6px;
-  margin-left: 20px;
-  font-size: 16px;
-  padding: 10px;
-  box-sizing: content-box;
 }
 
 .button {
@@ -165,51 +161,6 @@ h1 {
   margin-left: 20rem;
   margin-top: 50px;
   letter-spacing: 1px;
-}
-
-.dropdown {
-  min-width: 350px;
-}
-
-select {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 100%;
-  font-size: 1.15rem;
-  padding: 0.675em 6em 0.675em 1em;
-  background-color: #fff;
-  border: 1px solid #caced1;
-  border-radius: 0.25rem;
-  color: #000;
-  cursor: pointer;
-}
-
-.dropdown::before,
-.dropdown::after {
-  --size: 0.3rem;
-  position: absolute;
-  content: "";
-  right: 1rem;
-  pointer-events: none;
-}
-
-.dropdown::before {
-  border-left: var(--size) solid transparent;
-  border-right: var(--size) solid transparent;
-  border-bottom: var(--size) solid black;
-  top: 40%;
-}
-
-.dropdown::after {
-  border-left: var(--size) solid transparent;
-  border-right: var(--size) solid transparent;
-  border-top: var(--size) solid black;
-  top: 55%;
-}
-
-label {
-  color: #b39d97;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 textarea {
@@ -263,57 +214,29 @@ textarea {
 }
 
 #drop-area.highlight {
-  border-color: purple;
+  border-color: rgb(221, 103, 139);
 }
 
-p {
+/* p {
   margin-top: 0;
   align-items: center;
   text-align: center;
   color: #805b51;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
+} */
 
-.button-container {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  bottom: 2px;
-  left: 20rem;
-  width: 50%;
-}
-
-.done-button,
-.cancel-button {
-  width: 160px;
-  height: 40px;
-  border-radius: 6px;
-  background-color: #a48b83;
-  color: white;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.cancel-button {
-  width: 160px;
-  height: 40px;
-  border-radius: 6px;
-  border: 1px solid #a48b83;
-  background: transparent;
-  color: #a48b83;
-  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-#item-drop-area {
+#character-drop-area, #item-drop-area {
   border: 2px dashed #ccc;
   border-radius: 20px;
-  width: 60%;
+  width: 90%;
   height: 100%;
   font-family: sans-serif;
+  margin-left: 30px;
   padding: 20px;
 }
 
-#item-drop-area.highlight {
-  border-color: purple;
+#character-drop-area.highlight {
+  border-color: rgb(194, 103, 111);
 }
 
 #character1,
@@ -330,6 +253,48 @@ p {
   display: none;
 }
 
+.multiselect {
+  width: 90%;
+  margin-left: 20px;
+  border: 1px solid #8b8686;
+  background-color: #fff;
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+  color: #805b51;
+}
+
+.multiselect .title {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.multiselect .title::after {
+  content: '▼';
+  color: #8b8686;
+}
+
+.multiselect.active .title::after {
+  content: '▲';
+  color: #8b8686;
+}
+
+.multiselect .options {
+  border-top: 1px solid #959595;
+  box-sizing: border-box;
+}
+
+.multiselect .options div {
+  padding: 10px;
+  border-top: 1px solid #4a3232;
+}
+
+.multiselect .options div:hover {
+  background-color: #eee;
+}
+
 .down {
   display: block;
   margin-left: auto;
@@ -339,5 +304,93 @@ p {
 }
 
 .item-box {
-  margin-left: 40px;
+  margin-left: 10px;
+}
+
+
+@media (max-width: 1200px) {
+  .achievements {
+    margin-left: 15rem;
+  }
+
+  .box {
+    width: 80%;
+    margin-left: 10rem;
+  }
+
+  h1 {
+    margin-left: 10rem;
+  }
+
+  textarea {
+    width: 80%;
+    margin-left: 10rem;
+  }
+
+  .timer {
+    width: 80%;
+    margin-left: 10rem;
+  }
+
+  .button-container {
+    left: 10rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .achievements {
+    margin-left: 10rem;
+  }
+
+  .box {
+    width: 90%;
+    margin-left: 5rem;
+  }
+
+  h1 {
+    margin-left: 5rem;
+  }
+
+  textarea {
+    width: 90%;
+    margin-left: 5rem;
+  }
+
+  .timer {
+    width: 90%;
+    margin-left: 5rem;
+  }
+
+  .button-container {
+    left: 5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .achievements {
+    margin-left: 2rem;
+  }
+
+  .box {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  h1 {
+    margin-left: 2rem;
+  }
+
+  textarea {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .timer {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .button-container {
+    left: 0;
+  }
 }
