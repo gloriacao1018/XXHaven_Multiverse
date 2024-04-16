@@ -8,6 +8,7 @@ export default function Home() {
   const [selectedImages, setSelectedImages] = useState({});
   const [submissionMessage, setSubmissionMessage] = useState(""); 
   const [gameId, setGameId] = useState(null); // 用来存储提交后返回的游戏ID
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -23,6 +24,7 @@ export default function Home() {
 
   const handleSubmit = async (event) => {
     event.preventDefault(); // 防止表单的默认提交行为
+    setIsSubmitting(true);
   
     const formData = new FormData(event.target); // 使用表单的引用来创建FormData对象
   
@@ -192,7 +194,7 @@ export default function Home() {
             </label>
             <textarea id="winnerScenario3" name="winnerScenario3" rows="4" cols="50"></textarea>
           </div>
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={isSubmitting}>Submit</button>
           <button onClick={handleDelete} disabled={!gameId}>Delete</button>
           <button onClick={handleGenerateGame} disabled={!gameId}>NewGame</button>
         </form>

@@ -4,19 +4,24 @@
 <head>
     <meta charset="utf-8" />
     <title>BUILD YOUR OWN GAME</title>
+    <script>
+        var game = {
+            backgroundImage: "<%= game.backgroundImage %>",
+            // 添加其他需要从 server 传递到 client 的属性
+        };
+    </script>
     <script type=module>
 
 import zim from "https://zimjs.com/cdn/015/zim_game";
 
-const templateAssets = ["BabyDoll.ttf", 
-"titleBackground.png","gameOver.jpg", "defaultBackground.png","rules.png", "help.png",
+let templateAssets = [
+    // game.backgroundImage,
+    "BabyDoll.ttf",
+    "titleBackground.png","rules.png", "help.png",
+    "backgroundMusic.mp3","ding.mp3","lose.mp3","pickup.mp3"
+];
 
-"blackcat.png", "orangecat.png", "whitecat.png","tuxcat.png", 
-
-"milkdemo.png","fooddemo.png","brushdemo.png","toydemo.png", "catnipdemo.png",
-
-"backgroundMusic.mp3","ding.mp3","lose.mp3","pickup.mp3"];
-const path = "templateAssets/"
+const path = "/uploads/"; // 如果资源在不同的目录下，你可能需要在资源名称中包含完整路径
 
 new Frame(FIT, 1024, 768, light, dark, ready, templateAssets, path);
 function ready() {
@@ -29,6 +34,7 @@ function ready() {
             .center()
             .sca(.90)
             .addTo(part1);
+        // zog(titleBackground.file);
 
         STYLE = {
             font: "BabyDoll.ttf",
@@ -163,7 +169,8 @@ function ready() {
         let finalScore = 0;
 
         const gameContainer = new Container(W,H).center();
-        const gameBackground = new Pic("defaultBackground.png").scaleTo(gameContainer).center();
+        // const gameBackground = new Pic("defaultBackground.png").scaleTo(gameContainer).center();
+        const gameBackground = new Pic("<%= game.backgroundImage %>").scaleTo(gameContainer).center();
 
         let score = new Scorer({
             font:"BabyDoll.ttf",
@@ -174,7 +181,7 @@ function ready() {
         }).pos(50,50,RIGHT);
 
         let timer = new Timer({
-            time:120,
+            time:<%= game.timerLength %>,
             startPaused:true,
             font:"BabyDoll.ttf",
             backgroundColor:yellow,
@@ -182,6 +189,7 @@ function ready() {
             borderWidth:3,
             width:60
         }).pos(50,50);
+        // zog(timer.time);
 
         let instructions = new Label({
             font:"BabyDoll.ttf",
@@ -223,10 +231,10 @@ const textEditor = new TextEditor({
 
 //ADD RANDOM CHARACTERS/ GAME INITIALIZATION-------------------------------------------------------
     
-    let spotA = new Container(150, 300).loc(110, 400).reg(CENTER);
-    let spotB = new Container(150, 300).loc(350, 400).reg(CENTER);
-    let spotC = new Container(150, 300).loc(550, 400).reg(CENTER);
-    let spotD = new Container(150, 300).loc(800, 400).reg(CENTER);
+    let spotA = new Container(150, 300).loc(110, 250);
+    let spotB = new Container(150, 300).loc(350, 250);
+    let spotC = new Container(150, 300).loc(550, 250);
+    let spotD = new Container(150, 300).loc(800, 250);
     let spots = [spotA, spotB, spotC, spotD];
 
     let activeCharacters = [];
@@ -240,23 +248,26 @@ const textEditor = new TextEditor({
             }
 
             let characters = [
-                { pic: "blackcat.png", accepting: ["request1", "request3", "request2"], time: 20 },
-                { pic: "orangecat.png", accepting: ["request2", "request1", "request4"], time: 20 },
-                { pic: "whitecat.png", accepting: ["request4", "request1", ], time: 15 },
-                { pic: "tuxcat.png", accepting: ["request3", "request4", "request2"], time: 12 }
+                { pic: "<%= game.characters[0].image %>", accepting: ["<%= game.characters[0].accepting[0] %>", "<%= game.characters[0].accepting[1] %>", "<%= game.characters[0].accepting[2] %>"], time: 20 },
+                { pic: "<%= game.characters[1].image %>", accepting: ["<%= game.characters[1].accepting[0] %>", "<%= game.characters[0].accepting[1] %>", "<%= game.characters[1].accepting[2] %>"], time: 20 },
+                { pic: "<%= game.characters[2].image %>", accepting: ["<%= game.characters[2].accepting[0] %>", "<%= game.characters[0].accepting[1] %>", "<%= game.characters[2].accepting[2] %>"], time: 15 },
+                { pic: "<%= game.characters[3].image %>", accepting: ["<%= game.characters[3].accepting[0] %>", "<%= game.characters[0].accepting[1] %>", "<%= game.characters[3].accepting[2] %>"], time: 12 }
             ];
+            // zog(characters);
 
             if (spot.children.length === 0) {
 
                 let originalCharacterData = pluck(characters);              
                 let randomCharacterData = copy(originalCharacterData); 
     
-                let randomCharacterPic = new Pic(randomCharacterData.pic).animate({
-                    props: [
-                    { props: { y: -10 }, time: .2, ease: "bounceIn" },
-                    { props: { y: 20 }, time: .3, ease: "bounceOut" }
-                    ]
-                });
+                let randomCharacterPic = new Pic(randomCharacterData.pic).centerReg(spot).scaleTo(spot)
+                
+                // randomCharacterPic.animate({
+                //     props: [
+                //     { props: { y: -10 }, time: .2, ease: "bounceIn" },
+                //     { props: { y: 20 }, time: .3, ease: "bounceOut" }
+                //     ]
+                // });
 
                 let randomCharacterTimer = new Timer({
                     font:"BabyDoll.ttf",
@@ -266,14 +277,20 @@ const textEditor = new TextEditor({
                     width:40,
                     height:40,
                     time: randomCharacterData.time
-                }).center();
+                });
 
-                randomCharacterPic.addTo(spot).scaleTo(spot);
                 randomCharacterTimer.addTo(spot);
-                randomCharacterTimer.pos((randomCharacterPic.x+randomCharacterPic.height)/2 , (randomCharacterPic.y+randomCharacterPic.height)/2-100);
+                randomCharacterTimer.pos(randomCharacterPic.x, randomCharacterPic.y);
+                // randomCharacterTimer.pos(spot.width / 2 - randomCharacterTimer.width / 2, randomCharacterPic.y + randomCharacterPic.height + 10); // 居中定位，Y轴在角色图片下方10像素
+                // randomCharacterTimer.pos(randomCharacterPic.x , randomCharacterPic.y);
+                // randomCharacterTimer.pos((randomCharacterPic.x+randomCharacterPic.height)/2 , (randomCharacterPic.y+randomCharacterPic.height)/2-100);
+                // randomCharacterTimer.pos(spot.x , spot.y);
+
+                S.update();
 
                 activeCharacters.push({ pic: randomCharacterPic, data: randomCharacterData, spot: spot, timer: randomCharacterTimer });
-     
+                // zog(activeCharacters);
+
                 timeout(randomCharacterData.time,()=>{
                     if (!isGameOver) {
                             lose.play();
@@ -322,27 +339,31 @@ new Rectangle({
     borderColor:black,
     borderWidth:3}).pos(0,0, CENTER,BOTTOM).addTo(S);
 
-        const item1 = new Container(100, 100).loc(203, 578);
-        const item2 = new Container(100, 100).loc(406, 608);
-        const item3 = new Container(100, 100).loc(697, 624);
-        const item4 = new Container(100, 100).loc(562, 606);
+        const item1 = new Container(100, 100).pos(-300, 50, CENTER, BOTTOM);
+        const item2 = new Container(100, 100).pos(-100, 50, CENTER, BOTTOM);
+        const item3 = new Container(100, 100).pos(100, 50, CENTER, BOTTOM);
+        const item4 = new Container(100, 100).pos(300, 50, CENTER, BOTTOM);
 
         let item,request1,request2,request3,request4;
 
         loop(50, () => {
-            request1 = new Pic("milkdemo.png").addTo(item1).scaleTo(item1).drag();
-            request1.name = "request1";
-            request2 = new Pic("fooddemo.png").addTo(item2).scaleTo(item2).drag();
-            request2.name = "request2";
-            request3 = new Pic("brushdemo.png").addTo(item3).scaleTo(item3).drag();
-            request3.name = "request3";
-            request4 = new Pic("catnipdemo.png").addTo(item4).scaleTo(item4).drag();
-            request4.name = "request4";
+            request1 = new Pic("<%= game.items[0] %>").centerReg().addTo(item1).scaleTo(item1).drag();
+            request1.name = "item1";
+            request2 = new Pic("<%= game.items[1] %>").centerReg().addTo(item2).scaleTo(item2).drag();
+            request2.name = "item2";
+            request3 = new Pic("<%= game.items[2] %>").centerReg().addTo(item3).scaleTo(item3).drag();
+            request3.name = "item3";
+            request4 = new Pic("<%= game.items[3] %>").centerReg().addTo(item4).scaleTo(item4).drag();
+            request4.name = "item4";
+
+            zog(request4.x, request4.y)
 
 
             loop([request1, request2, request3,request4],item=>{
-                    item.startX = item.x;
-                    item.startY = item.y;
+                    item.on("pressdown", () => {
+                        item.startX = item.x;
+                        item.startY = item.y;
+                    });
                     item.on("pressup", () => checkItem(item));
                     S.update();
                 });
@@ -353,6 +374,7 @@ new Rectangle({
             loop(activeCharacters,activeCharacter=>{
 
                 if (item.hitTestBounds(activeCharacter.pic)) {
+                    zog(item.name);
                     zog("Hit Detected with", activeCharacter.data.accepting);
 
                     if (activeCharacter.data.accepting.includes(item.name)) {
@@ -414,19 +436,19 @@ new Rectangle({
         });
 
         const winningComments = {
-            0: "Congratulations on your progress! Keep up the great work!",
-            6: "You're making excellent strides! Keep pushing forward!",
-            16: "Outstanding job! You're really excelling!"
+            0: "<%= game.winnerScenarios[0] %>",
+            1: "<%= game.winnerScenarios[1] %>",
+            2: "<%= game.winnerScenarios[2] %>"
         };
         let comment = "";
         function displayWinningComment(score) {
 
             if (score <= 0) {
                 comment = winningComments[0];
-            } else if (score >= 1 && score <= 5) {
-                comment = winningComments[6];
+            } else if (score >= 1 && score <= 20) {
+                comment = winningComments[1];
             } else {
-                comment = winningComments[16];
+                comment = winningComments[2];
             }
 
             return comment;
@@ -472,8 +494,8 @@ new Rectangle({
             }).pos(0, 50, CENTER, BOTTOM).alp(0).animate({alpha: 1}, 1,null,null,null,4).top();
 
             restart.on("click", () => {
-                // window.location.reload(); //Dan said no lol
-                showPart4();
+                window.location.reload(); //Dan said no lol
+                // showPart4();
                 S.update();
             });
         }

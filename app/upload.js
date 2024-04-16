@@ -7,7 +7,8 @@ const multer = require('multer');
 const storage = multer.diskStorage({
   // 定义文件保存的目录
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '/uploads/'))
+    cb(null, path.join(__dirname, '..', 'public', 'uploads'));
+    console.log(path.join(__dirname, '..', 'public', 'uploads'));
   },  
   // 定义文件的命名规则
   filename: function (req, file, cb) {

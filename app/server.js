@@ -13,7 +13,7 @@ const app = express();
 
 // 配置CORS策略允许来自指定源的跨域请求
 app.use(cors({
-  origin: 'http://localhost:3000'
+  // origin: 'http://localhost:3000'
 }));
 
 // 设置请求体解析中间件
@@ -22,9 +22,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // 引入文件上传配置模块
 const upload = require('./upload');
+app.use(express.static('public'));
 
 // 设置静态文件服务目录
 app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use('/app', express.static(path.join(__dirname, 'app')));
 
 // 设置EJS为模板引擎并配置视图文件的目录
 app.set('view engine', 'ejs');
@@ -72,9 +74,19 @@ app.post('/submit-game', upload.fields([
   { name: 'winnerScenario2' },
   { name: 'winnerScenario3' },
 ]), (req, res) => {
-  // req.files将包含文件的信息
-  console.log(req.body); // 打印请求体
-  // req.body将包含非文件的表单字段
+  console.log("Received form data: ", req.body);
+  console.log("Uploaded files: ", req.files);
+
+  // 获取文件的相对路径 用来移除文件路径前的 public/ 前缀
+  function getRelativePath(filePath) {
+    return path.basename(filePath);
+  }
+
+  // 先检查数据库中是否已存在该背景图片的游戏
+  // const existingGame = await Game.findOne({ backgroundImage: getRelativePath(req.files['backgroundImage'][0].path) });
+  // if (existingGame) {
+  //   return res.status(409).send('Game already submitted.');
+  // }
 
   // 访问非文件数据
   const timerLength = req.body.timerLength;
@@ -87,41 +99,41 @@ app.post('/submit-game', upload.fields([
   const character4Items = req.body.character4Items;
 
   // 访问文件数据
-  const backgroundImage = req.files['backgroundImage'] ? req.files['backgroundImage'][0].path : '';
-  const item1 = req.files['item1'] ? req.files['item1'][0].path : '';
-  const item2 = req.files['item2'] ? req.files['item2'][0].path : '';
-  const item3 = req.files['item3'] ? req.files['item3'][0].path : '';
-  const item4 = req.files['item4'] ? req.files['item4'][0].path : '';
-  const character1 = req.files['character1'] ? req.files['character1'][0].path : '';
-  const character2 = req.files['character2'] ? req.files['character2'][0].path : '';
-  const character3 = req.files['character3'] ? req.files['character3'][0].path : '';
-  const character4 = req.files['character4'] ? req.files['character4'][0].path : '';
+  const backgroundImage = req.files['backgroundImage'] ? getRelativePath(req.files['backgroundImage'][0].path) : '';
+  const item1 = req.files['item1'] ? getRelativePath(req.files['item1'][0].path) : '';
+  const item2 = req.files['item2'] ? getRelativePath(req.files['item2'][0].path) : '';
+  const item3 = req.files['item3'] ? getRelativePath(req.files['item3'][0].path) : '';
+  const item4 = req.files['item4'] ? getRelativePath(req.files['item4'][0].path) : '';
+  const character1 = req.files['character1'] ? getRelativePath(req.files['character1'][0].path) : '';
+  const character2 = req.files['character2'] ? getRelativePath(req.files['character2'][0].path) : '';
+  const character3 = req.files['character3'] ? getRelativePath(req.files['character3'][0].path) : '';
+  const character4 = req.files['character4'] ? getRelativePath(req.files['character4'][0].path) : '';
 
   // 你可以在这里创建一个新的游戏对象
   // 确保你的游戏模型与你期望的数据结构匹配
   const GameData = {
-    backgroundImage: req.files['backgroundImage'] ? req.files['backgroundImage'][0].path : '',
+    backgroundImage: req.files['backgroundImage'] ? getRelativePath(req.files['backgroundImage'][0].path) : '',
     items: [
-      req.files['item1'] ? req.files['item1'][0].path : '',
-      req.files['item2'] ? req.files['item2'][0].path : '',
-      req.files['item3'] ? req.files['item3'][0].path : '',
-      req.files['item4'] ? req.files['item4'][0].path : '',
+      req.files['item1'] ? getRelativePath(req.files['item1'][0].path) : '',
+      req.files['item2'] ? getRelativePath(req.files['item2'][0].path) : '',
+      req.files['item3'] ? getRelativePath(req.files['item3'][0].path) : '',
+      req.files['item4'] ? getRelativePath(req.files['item4'][0].path) : '',
     ],
     characters: [
       {
-        image: req.files['character1'] ? req.files['character1'][0].path : '',
+        image: req.files['character1'] ? getRelativePath(req.files['character1'][0].path) : '',
         accepting: req.body['character1Items'] ? req.body['character1Items'].split(',') : []
       },
       {
-        image: req.files['character2'] ? req.files['character2'][0].path : '',
+        image: req.files['character2'] ? getRelativePath(req.files['character2'][0].path) : '',
         accepting: req.body['character2Items'] ? req.body['character2Items'].split(',') : []
       },
       {
-        image: req.files['character3'] ? req.files['character3'][0].path : '',
+        image: req.files['character3'] ? getRelativePath(req.files['character3'][0].path) : '',
         accepting: req.body['character3Items'] ? req.body['character3Items'].split(',') : []
       },
       {
-        image: req.files['character4'] ? req.files['character4'][0].path : '',
+        image: req.files['character4'] ? getRelativePath(req.files['character4'][0].path) : '',
         accepting: req.body['character4Items'] ? req.body['character4Items'].split(',') : []
       }
     ],
@@ -135,10 +147,6 @@ app.post('/submit-game', upload.fields([
   
 
   const newGame = new Game(GameData);
-
-//   newGame.save()
-//     .then(game => res.json(game))
-//     .catch(err => res.status(400).json('Error: ' + err));
 
 newGame.save()
   .then(game => {
