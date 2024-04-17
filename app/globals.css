@@ -171,7 +171,7 @@ textarea {
   margin-left: 20rem;
 }
 
-.submit {
+.submit, .newGame, .delete {
   display: block;
   width: 160px;
   height: 40px;

@@ -290,10 +290,10 @@ export default function Home() {
           >
             VOILA
           </button>
-          <button onClick={handleDelete} disabled={!gameId}>
+          <button onClick={handleDelete} disabled={!gameId} className="delete align-middle w-40 h-16 rounded-lg">
             Delete
           </button>
-          <button onClick={handleGenerateGame} disabled={!gameId}>
+          <button onClick={handleGenerateGame} disabled={!gameId} className="newGame align-middle w-40 h-16 rounded-lg">
             NewGame
           </button>
         </form>
