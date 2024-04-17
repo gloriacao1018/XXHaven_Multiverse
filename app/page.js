@@ -89,8 +89,8 @@ export default function Home() {
   return (
     <div>
       {isClient ? (
-        <form onSubmit={handleSubmit}>
-          <div className="cover bg-center bg-no-repeat bg-cover bg-fixed bg-heroImage">
+        <form className="w-full space-y-4" onSubmit={handleSubmit}>
+        <div className="cover bg-center bg-no-repeat bg-cover bg-fixed bg-heroImage">
             <div className="flex justify-between items-center ">
               <Image src={logo} alt="Logo" style={{ marginRight: "500px" }} />
               <a
