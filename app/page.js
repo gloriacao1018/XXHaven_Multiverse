@@ -1,3 +1,5 @@
+// page.js
+
 "use client";
 import { useState } from "react";
 import Image from "next/image";
@@ -15,183 +17,120 @@ import Multiselect from "./multiSelect";
 import ImageUpload from "./ImageUpload";
 
 export default function Home() {
+  const [selectedImages, setSelectedImages] = useState({});
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    const id = event.target.id;
+
+    reader.onloadend = () => {
+      setSelectedImages((prevState) => ({ ...prevState, [id]: reader.result }));
+    };
+
+    reader.readAsDataURL(file);
+  };
+
   return (
-    <main className={"min-w-screen min-h-screen"}>
-      <form className="w-full space-y-14" onSubmit={handleSubmit}>
-        <div className="cover bg-center bg-no-repeat bg-cover bg-fixed bg-heroImage">
-          <div className="flex justify-between items-center ">
-            <Image src={logo} alt="Logo" style={{ marginRight: "500px" }} />
-            <a
-              href="https://gloriacao1018.github.io/CatHaven/"
-              target="_blank"
-              rel="noopener noreferrer"
+    <main className="flex flex-col items-center justify-center min-h-screen py-2">
+      <div className="flex flex-col items-center justify-center w-full max-w-md px-4 py-8 bg-white shadow-md">
+        <form className="w-full space-y-4">
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label
+              htmlFor="backgroundImage"
+              className="mb-2 font-bold text-lg text-gray-900"
             >
-              <button className="button">Demo</button>
-            </a>{" "}
-            <button className="button">Login/Signup</button>
-          </div>
-
-          <h1
-            className="font-roboto text-9xl text-white font-medium"
-            style={{ marginTop: "600px" }}
-          >
-            STEP 1. GIVE IT A NAME & BACKGROUND
-          </h1>
-
-          <div className="box flex flex-col">
-            <label htmlFor="gameName">Game Name</label>
+              Upload Image for Your Background:
+            </label>
             <input
-              type="text"
-              id="gameName"
-              name="gameName"
-              className="textinput"
-              placeholder="Enter name"
+              type="file"
+              id="backgroundImage"
+              onChange={handleImageUpload}
+              className="px-3 py-2 border border-blue-300"
             />
             <ImageUpload />
           </div>
-        </div>
 
-        <Image src={down} alt="down arrow" className="down" />
-        <h1 className="font-roboto text-9xl">STEP 2. CREATE YOUR CHARACTERS</h1>
-
-        <div className="box flex flex-col px-4">
-          <label htmlFor="character1">Upload Image for Character 1: </label>
-          <div id="character-drop-area">
-            <form class="my-form">
-              <input
-                type="file"
-                id="character1"
-                name="character1"
-                onChange={handleImageUpload}
-              />{" "}
-              <label class="add-button" for="fileElem"></label>
-            </form>
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="itemImage">Upload Image for Your Item1:</label>
+            <input type="file" id="item1" onChange={handleImageUpload} />
           </div>
 
-          <label htmlFor="character1Items">Accepted Items (Choose 3)</label>
-          <Multiselect options={["Item 1", "Item 2", "Item 3", "Item4"]} />
-
-          <label htmlFor="character2">Upload Image for Character 2: </label>
-          <div id="character-drop-area">
-            <form class="my-form">
-              <input
-                type="file"
-                id="character2"
-                name="character2"
-                onChange={handleImageUpload}
-              />{" "}
-              <label class="add-button" for="fileElem"></label>
-            </form>
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="itemImage2">Upload Image for Your Item2:</label>
+            <input type="file" id="item2" onChange={handleImageUpload} />
           </div>
 
-          <label htmlFor="character2Items">Accepted Items (Choose 3)</label>
-          <Multiselect options={["Item 1", "Item 2", "Item 3", "Item4"]} />
-
-          <label htmlFor="character3">Upload Image for Character 3: </label>
-          <div id="character-drop-area">
-            <form class="my-form">
-              <input
-                type="file"
-                id="character3"
-                name="character3"
-                onChange={handleImageUpload}
-              />{" "}
-              <label class="add-button" for="fileElem"></label>
-            </form>
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="itemImage3">Upload Image for Your Item3: </label>
+            <input type="file" id="item3" onChange={handleImageUpload} />
           </div>
 
-          <label htmlFor="character3Items">Accepted Items (Choose 3)</label>
-          <Multiselect options={["Item 1", "Item 2", "Item 3", "Item4"]} />
-
-          <label htmlFor="character4">Upload Image for Character 4: </label>
-          <div id="character-drop-area">
-            <form class="my-form">
-              <input
-                type="file"
-                id="character4"
-                name="character4"
-                onChange={handleImageUpload}
-              />{" "}
-              <label class="add-button" for="fileElem"></label>
-            </form>
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="itemImage4">Upload Image for Your Item4: </label>
+            <input type="file" id="item4" onChange={handleImageUpload} />
           </div>
 
-          <label htmlFor="character4Items">Accepted Items (Choose 3)</label>
-          <Multiselect options={["Item 1", "Item 2", "Item 3", "Item4"]} />
-        </div>
-        <h1 className="font-roboto text-9xl font-medium">
-          STEP 3. CHOOSE YOUR ITEMS
-        </h1>
-
-        <div className="box">
-          <div className="item-box flex flex-col ">
-            <label htmlFor="itemImage2">Item1:</label>
-            <div id="item-drop-area">
-              <form class="my-form">
-                <input
-                  type="file"
-                  id="item1"
-                  name="item1"
-                  onChange={handleImageUpload}
-                />{" "}
-                <label class="add-button" for="fileElem"></label>
-              </form>
-            </div>
-
-            <label htmlFor="itemImage2">Item2:</label>
-            <div id="item-drop-area">
-              <form class="my-form">
-                <input
-                  type="file"
-                  id="item2"
-                  name="item2"
-                  onChange={handleImageUpload}
-                />{" "}
-                <label class="add-button" for="fileElem"></label>
-              </form>
-            </div>
-
-            <label htmlFor="itemImage3">Item3: </label>
-            <div id="item-drop-area">
-              <form class="my-form">
-                <input
-                  type="file"
-                  id="item3"
-                  name="item3"
-                  onChange={handleImageUpload}
-                />{" "}
-                <label class="add-button" for="fileElem"></label>
-              </form>
-            </div>
-
-            <label htmlFor="itemImage4">Item4: </label>
-            <div id="item-drop-area">
-              <form class="my-form">
-                <input
-                  type="file"
-                  id="item4"
-                  name="item4"
-                  onChange={handleImageUpload}
-                />{" "}
-                <label class="add-button" for="fileElem"></label>
-              </form>
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="character1">Upload Image for Character 1: </label>
+            <input type="file" id="character1" onChange={handleImageUpload} />
+            <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+              <label htmlFor="character1Items">Select Items for Character 1:</label>
+              <select multiple id="character1Items" className="mb-2 font-bold text-lg text-gray-900">
+                <option value="item1">Item 1</option>
+                <option value="item2">Item 2</option>
+                <option value="item3">Item 3</option>
+                <option value="item4">Item 4</option>
+              </select>
             </div>
           </div>
-        </div>
 
-        <div className="mount bg-center bg-no-repeat bg-cover bg-fixed bg-heroImage">
-          <h1 className="font-roboto text-9xl font-medium">
-            STEP 4. TIMER LENGTH
-          </h1>
-          <input
-            className="timer border-gray-300"
-            type="number"
-            id="timerLength"
-            name="timerLength"
-            min="1"
-            max="240"
-          />
-        </div>
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="character2">Upload Image for Character 2: </label>
+            <input type="file" id="character1" onChange={handleImageUpload} />
+            <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+              <label htmlFor="character1Items">Select Items for Character 1:</label>
+              <select multiple id="character1Items" className="px-3 py-2 border border-gray-300">
+                <option value="item1">Item 1</option>
+                <option value="item2">Item 2</option>
+                <option value="item3">Item 3</option>
+                <option value="item4">Item 4</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="character3">Upload Image for Character 3: </label>
+            <input type="file" id="character3" onChange={handleImageUpload} />
+            <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+              <label htmlFor="character1Items">Select Items for Character 1:</label>
+              <select multiple id="character1Items" className="px-3 py-2 border border-gray-300">
+                <option value="item1">Item 1</option>
+                <option value="item2">Item 2</option>
+                <option value="item3">Item 3</option>
+                <option value="item4">Item 4</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="character4">Upload Image for Character 4: </label>
+            <input type="file" id="character4" onChange={handleImageUpload} />
+            <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+              <label htmlFor="character1Items">Select Items for Character 1:</label>
+              <select multiple id="character1Items" className="px-3 py-2 border border-gray-300">
+                <option value="item1">Item 1</option>
+                <option value="item2">Item 2</option>
+                <option value="item3">Item 3</option>
+                <option value="item4">Item 4</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="timerLength">Select Timer's Length: </label>
+            <input type="number" id="timerLength" min="1" max="240" />
+          </div>
 
         <div className="bottom bg-center bg-no-repeat bg-cover bg-fixed bg-heroImage">
           <h1 className="font-roboto text-9xl font-medium">
@@ -202,41 +141,34 @@ export default function Home() {
             <label htmlFor="winnerScenario" className="achievements">
               Achievements: 0
             </label>
-            <textarea
-              id="winnerScenario1"
-              name="winnerScenario1"
-              rows="4"
-              cols="50"
-            ></textarea>
-
-            <label htmlFor="winnerScenario" className="achievements">
-              Achievements: 20
-            </label>
-            <textarea
-              id="winnerScenario2"
-              name="winnerScenario2"
-              rows="4"
-              cols="50"
-            ></textarea>
-
-            <label htmlFor="winnerScenario3" className="achievements">
-              Achievements: 20+
-            </label>
-            <textarea
-              id="winnerScenario3"
-              name="winnerScenario3"
-              rows="4"
-              cols="50"
-            ></textarea>
+            <textarea id="winnerScenario" rows="4" cols="50"></textarea>
           </div>
-          <button
-            type="submit"
-            className="submit align-middle w-40 h-16 rounded-lg"
-          >
-            VOILA
-          </button>
-        </div>
-      </form>
+
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="winnerScenario2">
+              Fill Out Winner Screen Scenario2: 
+            </label>
+            <textarea id="winnerScenario2" rows="4" cols="50"></textarea>
+          </div>
+
+          <div className="flex flex-col bg-gray-200 w-11/20 min-w-300 p-5 rounded text-center box-shadow">
+            <label htmlFor="winnerScenario3">
+              Fill Out Winner Screen Scenario3: 
+            </label>
+            <textarea id="winnerScenario3" rows="4" cols="50"></textarea>
+          </div>
+        </form>
+
+        {Object.entries(selectedImages).map(([id, src]) => (
+          <Image
+            key={id}
+            src={src}
+            alt="Uploaded Image"
+            width={500}
+            height={500}
+          />
+        ))}
+      </div>
     </main>
   );
 }
