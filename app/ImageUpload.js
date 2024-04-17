@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import Image from 'next/image';
-import image from "../app/assets/Picture.png";
+// import image from "../app/assets/Picture.png";
 
 
 function ImageUpload() {
@@ -48,8 +48,7 @@ function ImageUpload() {
                 <img src={preview} alt="Preview" />
               ) : (
                 <>
-                  <Image src={image} alt="drop image icon" />
-                  <form className="my-form">
+                  {/* <Image src={image} alt="drop image icon" /> */}
                     <p>Drop your image here</p>
                     <input
                       type="file"
@@ -62,7 +61,6 @@ function ImageUpload() {
                     <label className="button" htmlFor="fileElem">
                       Upload
                     </label>
-                  </form>
                 </>
               )}
             </div>
